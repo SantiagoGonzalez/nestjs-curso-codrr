@@ -1,6 +1,8 @@
-import { IUser } from "interfaces/user.interface";
-import { Column, Entity } from "typeorm";
+import { IUser } from "../../../interfaces/user.interface";
+import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity as AppBaseEntity } from "../../config/base.entity";
+import { ROLES } from "../../constants/roles";
+import { UsersProjectsEntity } from "./usersProjects.entity";
 
 @Entity({name:'users'})
 export class UsersEntity extends AppBaseEntity implements IUser{
@@ -10,12 +12,18 @@ export class UsersEntity extends AppBaseEntity implements IUser{
     lastName : string;
     @Column()
     age : number;
-    @Column()
+    @Column({unique :true})
     email : string;
-    @Column()
+    @Column({unique :true})
     username : string;
     @Column()
     password : string;
-    @Column()
-    role : string;
+
+    //PARA DEFINIRLO COMO ENUM
+    @Column({type: 'enum', enum:ROLES})
+    role : ROLES;
+
+    //relacion con los projects (a que proyectos pertenece este user)
+    @OneToMany(()=>UsersProjectsEntity, (usersProject)=>usersProject.user)
+    projectsIncludes: UsersProjectsEntity[]
 }

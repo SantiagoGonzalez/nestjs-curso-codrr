@@ -12,8 +12,8 @@ export abstract class BaseEntity{
 
     @UpdateDateColumn({
         type:'timestamp',
-        name:'created_at'
+        name:'updated_at'
     }) //para update
-    
+
     updatedAt: Date;
 }
